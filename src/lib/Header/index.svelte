@@ -1,120 +1,63 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import logo from './svelte-logo.svg';
+
+	import Logo from '$lib/images/logo.svg';
+	import { onMount } from 'svelte';
+
+	let currentPath = '/';
+
+	if (typeof window !== 'undefined') {
+		currentPath = window.location.pathname;
+	}
+
+	onMount(() => {
+		window.addEventListener('sveltekit:navigation-end', () => {
+			currentPath = window.location.pathname;
+		});
+	});
 </script>
 
-<header>
-	<div class="corner">
-		<a href="https://kit.svelte.dev">
-			<img src={logo} alt="SvelteKit" />
+<header class="text-gray-600 body-font">
+	<div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+		<a href="/" class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+			<img class="w-8 h-8" src={Logo} alt="Brand logo" />
+			<span class="logo ml-3 text-xl">TabFoolery</span>
 		</a>
-	</div>
-
-	<nav>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
-		</svg>
-		<ul>
-			<li class:active={$page.path === '/'}><a sveltekit:prefetch href="/">Home</a></li>
-			<li class:active={$page.path === '/about'}><a sveltekit:prefetch href="/about">About</a></li>
-			<li class:active={$page.path === '/todos'}><a sveltekit:prefetch href="/todos">Todos</a></li>
-		</ul>
-		<svg viewBox="0 0 2 3" aria-hidden="true">
-			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
-		</svg>
-	</nav>
-
-	<div class="corner">
-		<!-- TODO put something else here? github link? -->
+		<nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+			<a
+				href="/features"
+				class="mr-5 hover:text-gray-900"
+				class:active={currentPath === '/features'}>Features</a
+			>
+			<a href="/contact" class="mr-5 hover:text-gray-900" class:active={currentPath === '/contact'}
+				>Contact</a
+			>
+		</nav>
+		<a
+			href="/getting-started"
+			class="inline-flex text-white items-center bg-blue-chill-500 border-0 py-1 px-3 focus:outline-none hover:bg-blue-chill-600 rounded mt-4 md:mt-0"
+			>Get Started
+			<svg
+				fill="none"
+				stroke="currentColor"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				class="w-4 h-4 ml-1"
+				viewBox="0 0 24 24"
+			>
+				<path d="M5 12h14M12 5l7 7-7 7" />
+			</svg>
+		</a>
 	</div>
 </header>
 
 <style>
-	header {
-		display: flex;
-		justify-content: space-between;
+	a {
+		transition: border 0.3s;
+		border: 0px transparent solid;
 	}
-
-	.corner {
-		width: 3em;
-		height: 3em;
-	}
-
-	.corner a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-	}
-
-	.corner img {
-		width: 2em;
-		height: 2em;
-		object-fit: contain;
-	}
-
-	nav {
-		display: flex;
-		justify-content: center;
-		--background: rgba(255, 255, 255, 0.7);
-	}
-
-	svg {
-		width: 2em;
-		height: 3em;
-		display: block;
-	}
-
-	path {
-		fill: var(--background);
-	}
-
-	ul {
-		position: relative;
-		padding: 0;
-		margin: 0;
-		height: 3em;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		list-style: none;
-		background: var(--background);
-		background-size: contain;
-	}
-
-	li {
-		position: relative;
-		height: 100%;
-	}
-
-	li.active::before {
-		--size: 6px;
-		content: '';
-		width: 0;
-		height: 0;
-		position: absolute;
-		top: 0;
-		left: calc(50% - var(--size));
-		border: var(--size) solid transparent;
-		border-top: var(--size) solid var(--accent-color);
-	}
-
-	nav a {
-		display: flex;
-		height: 100%;
-		align-items: center;
-		padding: 0 1em;
-		color: var(--heading-color);
-		font-weight: 700;
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		letter-spacing: 10%;
-		text-decoration: none;
-		transition: color 0.2s linear;
-	}
-
-	a:hover {
-		color: var(--accent-color);
+	.active {
+		border-bottom: solid 6px #0ea2b5;
 	}
 </style>
